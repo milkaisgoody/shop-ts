@@ -24,7 +24,7 @@ const AdminPage = () => {
                 <h2>관리자 대시보드</h2>
                 {/* 빠른메뉴 */}
                 <div className="admin-menu">
-                    <Link to='/product/new' className="admin-btn" admin-btn_primary>상품 등록</Link>
+                    <Link to='/product/new' className="admin-btn admin-btn_primary">상품 등록</Link>
                     <Link to='/' className="admin-btn">상품 목록</Link>
                 </div>
             </div>
