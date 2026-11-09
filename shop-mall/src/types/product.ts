@@ -6,7 +6,8 @@ export interface Product{
     pName: string,
     category: Category,
     price: number,
-    description: string
+    description: string;
+    image? : string;
 }
 
 //상품 등록 폼 타입 정의 
