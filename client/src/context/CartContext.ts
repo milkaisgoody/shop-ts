@@ -1,15 +1,15 @@
 import { createContext, useContext } from "react";
 import type { CartItem } from "../types/cart";
 
-//장바구니 컨텍스트 타입 정의 
+// 장바구니 컨텍스트 타입 정의
 interface CartContextType{
-    cartItems: CartItem[]; //장바구니 목록
+    cartItems: CartItem[]; // 장바구니 목록
     addToCart: (productId: number, qty: number) => void;
     updateQuantity: (productId: number, qty: number) => void;
     removeFromCart: (productId: number) => void;
     clearCart: () => void;
     totalQuantity: number;
-    totalPrice : number;
+    totalPrice: number;
 }
 
 // 장바구니 컨텍스트 생성

@@ -3,11 +3,13 @@ import type { ProductForm } from "../types/product";
 import { useProduct } from "../context/ProductContext";
 import { useNavigate } from "react-router-dom";
 
+// 등록 폼 초기화
 const initialForm: ProductForm = {
     pName: "",
     category: "마우스",
     price: 0,
-    description: ""
+    description: "",
+    image: ""
 }
 
 const AddProduct = () => {
@@ -16,20 +18,20 @@ const AddProduct = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    //폼에 입력된 데이터 가져오기
-    const { pName, category, price, description } = form;
+    // 폼에 입력된 데이터 가져오기
+    const { pName, category, price, description, image } = form;
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
-    };
+        const {name, value} = e.target;
+        setForm({...form, [name]: value})  //입력 데이터 저장
+    }
 
-    //폼 제출 핸들러
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //  폼 제출 핸들러
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //유효성 검사
+        // 유효성 검사
         if(!pName.trim()){
             setError("상품명을 입력해주세요")
             return;
@@ -43,36 +45,41 @@ const AddProduct = () => {
             return;
         }
 
-        //상품추가
-        addProduct({
-            pName,
-            category,
-            price: Number(price), //화면에 입력한 가격은 문자형이므로 숫자형변환
-            description
-        });
-        alert("상품이 등록되었습니다.");
-        navigate('/'); //상품 목록으로 이동
+        // 상품 추가 함수 호출
+        try{
+            await addProduct({
+                pName,
+                category,
+                price: Number(price),  //화면에 입력한 가격은 문자형이므로 숫자형변환
+                description,
+                image: image || undefined
+            });
+            alert("상품이 등록되었습니다.");
+            navigate('/');  //상품 목록으로 이동
+        }catch{
+            setError("상품 등록중 오류가 발생했습니다.");
+        }
     }
 
-    // 폼 초기화 핸들러
+    // 취소 버튼 - 폼 초기화
     const handleCancel = () => {
         setForm(initialForm);
         setError(null);
-    };
+    }
 
-    return (
+    return(
         <div className="product-add">
             <h2>상품 등록</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="pName">상품명</label>
-                    <input
-                        type="text"
+                    <input 
+                        type="text" 
                         id="pName"
                         name="pName"
                         value={pName}
                         onChange={handleChange}
-                        placeholder="상품명을 입력해주세요."
+                        placeholder="상품명을 입력해주세요"
                     />
                 </div>
                 <div>
@@ -91,8 +98,8 @@ const AddProduct = () => {
                 </div>
                 <div>
                     <label htmlFor="price">가격</label>
-                    <input
-                        type="number"
+                    <input 
+                        type="number" 
                         id="price"
                         name="price"
                         value={price}
@@ -101,25 +108,40 @@ const AddProduct = () => {
                 </div>
                 <div>
                     <label htmlFor="description">설명</label>
-                    <textarea
+                    <textarea 
                         id="description"
                         name="description"
                         value={description}
                         onChange={handleChange}
-                        placeholder="상품 설명을 입력해주세요."
+                        placeholder="상품 설명을 입력해주세요"
                         rows={4}
                     />
                 </div>
+                <div>
+                    <label htmlFor="image">이미지:</label>
+                    <select
+                        id="image"
+                        name="image"
+                        value={image}
+                        onChange={handleChange}
+                    >
+                        <option value="">선택 안 함</option>
+                        <option value="/images/mouse.png">마우스</option>
+                        <option value="/images/keyboard.png">키보드</option>
+                        <option value="/images/monitor.png">모니터</option>
+                        <option value="/images/usb-hub.png">USB-C 허브</option>
+                        <option value="/images/webcam.png">웹캠</option>
+                    </select>
+                    </div>
                 {error && 
                     <p className="product-add_error">{error}</p>}
                 <div className="product-add_buttons">
                     <button type="submit">등록</button>
                     <button 
-                        type="button" 
+                        type="button"
                         onClick={handleCancel}
                     >취소</button>
                 </div>
-
             </form>
         </div>
     )

@@ -6,23 +6,22 @@ const AdminPage = () => {
     const { products } = useProduct();
     const { users } = useUser();
 
-    //관리자 수 계산
+    // 관리자 수 계산
     const adminCount = users.filter(user => user.role === "admin").length;
 
-    // 평균 가격 - 총 가격 / 상품 수 
-    const totalPrice 
-        = products.reduce((sum, product) => sum + product.price, 0)
-    
+    // 평균 가격 = 총 가격 / 상품 수
+    const totalPrice = 
+        products.reduce((sum, product) => sum + product.price, 0);
 
-    //상품이 없으면 0으로 나누지 않도록 0을 반환
+    // 상품이 없으면 0으로 나누지 않도록 0을 반환
     const avgPrice = products.length > 0 ?
-         Math.round(totalPrice / products.length) : 0; //소수를 고려 반올림(정수)
+        Math.round(totalPrice / products.length) : 0;  //소수를 고려 반올림(정수)
 
-        return(
+    return(
         <div className="admin-page">
             <div className="admin-header">
                 <h2>관리자 대시보드</h2>
-                {/* 빠른메뉴 */}
+                {/* 빠른 메뉴 */}
                 <div className="admin-menu">
                     <Link to='/product/new' className="admin-btn admin-btn_primary">상품 등록</Link>
                     <Link to='/' className="admin-btn">상품 목록</Link>
@@ -33,7 +32,7 @@ const AdminPage = () => {
             <div className="admin-cards">
                 <div className="admin-card">
                     <p>전체 상품</p>
-                    <p>{products.length}</p>
+                    <p>{products.length}개</p>
                 </div>
                 <div className="admin-card">
                     <p>전체 회원</p>
@@ -72,9 +71,9 @@ const AdminPage = () => {
                         ))}
                     </tbody>
                 </table>
-
             </div>
-            {/* 회원목록 */}
+
+            {/* 회원 목록 */}
             <h3>회원 목록</h3>
             <div className="admin-table-wrap">
                 <table>
@@ -105,4 +104,5 @@ const AdminPage = () => {
         </div>
     )
 }
+
 export default AdminPage;
