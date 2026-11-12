@@ -1,8 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-// 서버 주소를 한 곳에 모아 두고, 요청할 때는 '/products'처럼 뒷부분만 적습니다.
+// 서버 주소를 한 곳에 모아두고, 요청할 때 '/products' 부분만 적음
+// 요청할때마다 세션쿠키를 함께 보냄
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+    baseURL: "http://localhost:8000/api",
+    withCredentials: true
 });
 
 export default api;

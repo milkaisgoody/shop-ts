@@ -4,20 +4,25 @@ import { Link } from "react-router-dom";
 
 const AdminPage = () => {
     const { products } = useProduct();
-    const { users } = useUser();
+    const { users, isAuthLoading } = useUser();
+
+    // 로그인 상태를 확인하는 동안에는 기다림 (새로고침 직후)
+    if (isAuthLoading) {
+        return <div>불러오는 중...</div>;
+    }
 
     // 관리자 수 계산
     const adminCount = users.filter(user => user.role === "admin").length;
 
     // 평균 가격 = 총 가격 / 상품 수
-    const totalPrice = 
+    const totalPrice =
         products.reduce((sum, product) => sum + product.price, 0);
 
     // 상품이 없으면 0으로 나누지 않도록 0을 반환
     const avgPrice = products.length > 0 ?
         Math.round(totalPrice / products.length) : 0;  //소수를 고려 반올림(정수)
 
-    return(
+    return (
         <div className="admin-page">
             <div className="admin-header">
                 <h2>관리자 대시보드</h2>
@@ -87,7 +92,7 @@ const AdminPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => 
+                        {users.map(user =>
                             <tr key={user.id}>
                                 <td>{user.id}</td>
                                 <td>{user.username}</td>
